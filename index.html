@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Ledger — Personal Expense Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="spine" aria-hidden="true"></div>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="eyebrow">Personal Finance</p>
+    <h1>The Ledger</h1>
+    <p class="tagline">Track what comes in. Watch what goes out.</p>
+  </header>
+
+  <section class="card income-panel">
+    <div class="income-row">
+      <div class="income-field">
+        <label for="incomeInput">Monthly income, after tax</label>
+        <div class="input-group">
+          <span class="currency">KES</span>
+          <input type="number" id="incomeInput" placeholder="0.00" min="0" step="0.01" inputmode="decimal">
+        </div>
+      </div>
+      <button id="saveIncomeBtn" class="btn btn-credit">Set income</button>
+    </div>
+    <p class="income-month">Recorded for <strong id="currentMonthLabel">—</strong></p>
+  </section>
+
+  <section class="summary-grid">
+    <div class="summary-card credit">
+      <span class="summary-label">Income</span>
+      <span class="summary-value" id="sumIncome">KES 0</span>
+    </div>
+    <div class="summary-card debit">
+      <span class="summary-label">Total expenses</span>
+      <span class="summary-value" id="sumExpenses">KES 0</span>
+    </div>
+    <div class="summary-card target">
+      <span class="summary-label">Recommended savings · 15%</span>
+      <span class="summary-value" id="sumTarget">KES 0</span>
+    </div>
+    <div class="summary-card balance">
+      <span class="summary-label">Balance after expenses</span>
+      <span class="summary-value" id="sumBalance">KES 0</span>
+      <span class="summary-note" id="savingsVerdict"></span>
+    </div>
+  </section>
+
+  <section class="card chart-panel">
+    <h2>Income vs. expenses — last 6 months</h2>
+    <canvas id="incomeExpenseChart" height="220"></canvas>
+  </section>
+
+  <section class="actions">
+    <button class="btn btn-debit-outline" id="openDailyBtn" type="button">+ Log daily expense</button>
+    <button class="btn btn-debit-outline" id="openMonthlyBtn" type="button">+ Log monthly expense</button>
+  </section>
+
+  <section class="card ledger-table">
+    <h2>Entries — <span id="currentMonthLabel2">—</span></h2>
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Category</th><th>Kind</th><th class="num">Amount</th><th class="col-action"></th></tr>
+      </thead>
+      <tbody id="entriesBody"></tbody>
+    </table>
+    <p class="empty-state" id="emptyState">No entries yet. Log your first expense above.</p>
+  </section>
+
+  <footer class="colophon">
+    <p>Stored in Firebase Firestore · Rendered with Chart.js</p>
+  </footer>
+
+</main>
+
+<!-- Daily expense modal -->
+<div class="modal-backdrop" id="dailyModal">
+  <form class="modal card" id="dailyForm">
+    <h3>Log a daily expense</h3>
+    <label>Category
+      <select id="dailyCategory">
+        <option>Food</option>
+        <option>Transport</option>
+        <option>Misc</option>
+      </select>
+    </label>
+    <label>Amount, KES
+      <input type="number" id="dailyAmount" min="0" step="0.01" required>
+    </label>
+    <label>Date
+      <input type="date" id="dailyDate" required>
+    </label>
+    <div class="modal-actions">
+      <button type="button" class="btn-ghost" data-close="dailyModal">Cancel</button>
+      <button type="submit" class="btn btn-debit">Save entry</button>
+    </div>
+  </form>
+</div>
+
+<!-- Monthly expense modal -->
+<div class="modal-backdrop" id="monthlyModal">
+  <form class="modal card" id="monthlyForm">
+    <h3>Log a monthly expense</h3>
+    <label>Category
+      <select id="monthlyCategory">
+        <option>Rent</option>
+        <option>Utilities</option>
+        <option>Loan repayment</option>
+        <option>Credit card</option>
+      </select>
+    </label>
+    <label>Amount, KES
+      <input type="number" id="monthlyAmount" min="0" step="0.01" required>
+    </label>
+    <label>Date
+      <input type="date" id="monthlyDate" required>
+    </label>
+    <div class="modal-actions">
+      <button type="button" class="btn-ghost" data-close="monthlyModal">Cancel</button>
+      <button type="submit" class="btn btn-debit">Save entry</button>
+    </div>
+  </form>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
