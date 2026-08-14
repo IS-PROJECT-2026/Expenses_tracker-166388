@@ -1,0 +1,50 @@
+## Creating a Free Cloud Firestore Database
+
+Cloud Firestore can be created under Firebase's **Spark (no-cost) plan**, which provides a free usage quota without requiring a billing account. The current free quota includes 1 GiB of stored data, 50,000 document reads per day, 20,000 writes per day, and 20,000 deletes per day. ([Firebase][1])
+
+### Steps
+
+1. **Create a Firebase project**
+
+   * Sign in to the [Firebase Console](https://console.firebase.google.com/?utm_source=chatgpt.com).
+   * Create a new Firebase project or select an existing project.
+
+2. **Open Cloud Firestore**
+
+   * From the Firebase project dashboard, navigate to **Build → Firestore Database**.
+
+3. **Create the database**
+
+   * Select **Create database**.
+   * Choose **Standard edition**.
+   * Select an appropriate database location.
+   * Choose the initial **Security Rules** mode.
+
+4. **Configure security rules**
+
+   * For initial development, **Test mode** can be used.
+   * Before deploying the application, replace the test rules with appropriate security rules to prevent unauthorized access. ([Firebase][2])
+
+5. **Create the database**
+
+   * Click **Create** and wait for Firestore to initialize.
+
+6. **Create the data structure**
+
+   * Create the required **collections** and **documents**.
+   * Add the fields required by the application.
+
+7. **Connect the application**
+
+   * Register the application with the Firebase project.
+   * Add the Firebase configuration/SDK to the application.
+   * Initialize Firestore and use it to read and write application data.
+
+### Free-tier considerations
+
+The Firestore free quota is sufficient for small applications and development projects. Only **one Firestore database per Firebase project** qualifies for the free quota. Exceeding the free limits or using features that require billing can result in charges, so usage should be monitored. ([Firebase][1])
+
+**Reference:** [Firebase Firestore documentation](https://firebase.google.com/docs/firestore?utm_source=chatgpt.com)
+
+[1]: https://firebase.google.com/docs/firestore/pricing?utm_source=chatgpt.com "Understand Cloud Firestore billing  |  Firebase"
+[2]: https://firebase.google.com/docs/firestore/manage-databases?authuser=2&utm_source=chatgpt.com "Manage databases  |  Firestore  |  Firebase"
