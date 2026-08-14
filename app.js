@@ -48,7 +48,12 @@ db.collection("income").doc(currentMonth).onSnapshot((doc) => {
 document.getElementById("saveIncomeBtn").addEventListener("click", async () => {
   const val = Number(document.getElementById("incomeInput").value);
   if (!val || val < 0) return;
-  await db.collection("income").doc(currentMonth).set({ amount: val });
+  try {
+    await db.collection("income").doc(currentMonth).set({ amount: val });
+  } catch (err) {
+    console.error("Failed to save income:", err);
+    alert("Couldn't save income: " + err.message);
+  }
 });
 
 // ---------- Expenses ----------
@@ -63,9 +68,14 @@ db.collection("expenses")
   });
 
 async function addExpense({ type, category, amount, date }) {
-  await db.collection("expenses").add({
-    type, category, amount: Number(amount), date, month: monthKey(date)
-  });
+  try {
+    await db.collection("expenses").add({
+      type, category, amount: Number(amount), date, month: monthKey(date)
+    });
+  } catch (err) {
+    console.error("Failed to add expense:", err);
+    alert("Couldn't save expense: " + err.message);
+  }
 }
 
 async function deleteExpense(id) {
