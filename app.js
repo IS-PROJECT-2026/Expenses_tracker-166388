@@ -114,7 +114,8 @@ function renderSummary() {
 
   const verdict = document.getElementById("savingsVerdict");
   if (!currentIncome) {
-    verdict.textContent = "Set your income to see a savings target.";
+    verdict.textContent = "Set your income to see a savings target. ";//🚀
+
   } else if (balance >= target) {
     const pct = ((balance / currentIncome) * 100).toFixed(1);
     verdict.textContent = `On track — you're positioned to save ${pct}% this month.`;
