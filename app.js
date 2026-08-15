@@ -40,7 +40,7 @@ let chart = null;
 
 // ---------- Income ----------
 db.collection("income").doc(currentMonth).onSnapshot((doc) => {
-  currentIncome = doc.exists ? Number(doc.data().amountKES) : 0;
+  currentIncome = doc.exists ? Number(doc.data().amount) : 0;
   document.getElementById("incomeInput").value = currentIncome || "";
   renderSummary();
 });
@@ -49,7 +49,7 @@ document.getElementById("saveIncomeBtn").addEventListener("click", async () => {
   const val = Number(document.getElementById("incomeInput").value);
   if (!val || val < 0) return;
   try {
-    await db.collection("income").doc(currentMonth).set({ amountKES: val });
+    await db.collection("income").doc(currentMonth).set({ amount: val });
   } catch (err) {
     console.error("Failed to save income:", err);
     alert("Couldn't save income: " + err.message);
@@ -67,10 +67,10 @@ db.collection("expenses")
     renderSummary();
   });
 
-async function addExpense({ type, category, amountKES, date }) {
+async function addExpense({ type, category, amount, date }) {
   try {
     await db.collection("expenses").add({
-      type, category, amountKES: Number(amountKES), date, month: monthKey(date)
+      type, category, amountKES: Number(amount), date, month: monthKey(date)
     });
   } catch (err) {
     console.error("Failed to add expense:", err);
@@ -94,7 +94,7 @@ function renderEntries() {
       <td>${e.date}</td>
       <td>${e.category}</td>
       <td>${e.type}</td>
-      <td class="num amountKES-debit">− ${KES(e.amountKES)}</td>
+      <td class="num amount-debit">− ${KES(e.amount)}</td>
       <td class="col-action"><button class="row-delete" title="Delete entry">✕</button></td>
     `;
     tr.querySelector(".row-delete").addEventListener("click", () => deleteExpense(e.id));
@@ -103,7 +103,7 @@ function renderEntries() {
 }
 
 function renderSummary() {
-  const total = currentExpenses.reduce((sum, e) => sum + Number(e.amountKES), 0);
+  const total = currentExpenses.reduce((sum, e) => sum + Number(e.amount), 0);
   const target = currentIncome * 0.15;
   const balance = currentIncome - total;
 
@@ -133,7 +133,7 @@ async function renderChart() {
   const incomeSnaps = await Promise.all(
     months.map((m) => db.collection("income").doc(m).get())
   );
-  const incomeByMonth = months.map((m, i) => (incomeSnaps[i].exists ? Number(incomeSnaps[i].data().amountKES) : 0));
+  const incomeByMonth = months.map((m, i) => (incomeSnaps[i].exists ? Number(incomeSnaps[i].data().amount) : 0));
 
   const expenseSnap = await db.collection("expenses")
     .where("month", "in", months.length > 10 ? months.slice(0, 10) : months)
@@ -142,7 +142,7 @@ async function renderChart() {
   const expenseByMonth = Object.fromEntries(months.map((m) => [m, 0]));
   expenseSnap.forEach((doc) => {
     const d = doc.data();
-    if (expenseByMonth[d.month] !== undefined) expenseByMonth[d.month] += Number(d.amountKES);
+    if (expenseByMonth[d.month] !== undefined) expenseByMonth[d.month] += Number(d.amount);
   });
 
   const labels = months.map((m) => monthLabel(m).split(" ")[0]);
@@ -188,7 +188,7 @@ document.getElementById("dailyForm").addEventListener("submit", async (ev) => {
   await addExpense({
     type: "daily",
     category: document.getElementById("dailyCategory").value,
-    amountKES: document.getElementById("dailyAmount").value,
+    amount: document.getElementById("dailyAmount").value,
     date: document.getElementById("dailyDate").value
   });
   ev.target.reset();
@@ -201,7 +201,7 @@ document.getElementById("monthlyForm").addEventListener("submit", async (ev) => 
   await addExpense({
     type: "monthly",
     category: document.getElementById("monthlyCategory").value,
-    amountKES: document.getElementById("monthlyAmount").value,
+    amount: document.getElementById("monthlyAmount").value,
     date: document.getElementById("monthlyDate").value
   });
   ev.target.reset();
