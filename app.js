@@ -112,6 +112,18 @@ function renderSummary() {
   document.getElementById("sumTarget").textContent = KES(target);
   document.getElementById("sumBalance").textContent = KES(balance);
 
+  const verdict = document.getElementById("savingsVerdict");
+  if (!currentIncome) {
+    verdict.textContent = "Set your income to see a savings target. ";//🚀
+
+  } else if (balance >= target) {
+    const pct = ((balance / currentIncome) * 100).toFixed(1);
+    verdict.textContent = `On track — you're positioned to save ${pct}% this month.`;
+    verdict.style.color = "#A9D6C1";
+  } else {
+    verdict.textContent = `Short of the 15% target by ${KES(target - balance)}.`;
+    verdict.style.color = "#E8B7A2";
+  }
 }
 
 // ---------- Chart: income vs expenses, last 6 months ----------
