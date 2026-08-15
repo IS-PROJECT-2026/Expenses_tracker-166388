@@ -67,9 +67,10 @@ db.collection("expenses")
     renderSummary();
   });
 
-async function addExpense({ type, category, amount, date }) {
+async function addExpense({ type, category, amount, date, note }) {
   try {
     await db.collection("expenses").add({
+      type, category, amount: Number(amount), date, month: monthKey(date), note: note || ""
       type, category, amountKES: Number(amount), date, month: monthKey(date)
     });
   } catch (err) {
