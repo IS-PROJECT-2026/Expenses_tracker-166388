@@ -70,7 +70,7 @@ db.collection("expenses")
 async function addExpense({ type, category, amount, date }) {
   try {
     await db.collection("expenses").add({
-      type, category, amount: Number(amount), date, month: monthKey(date)
+      type, category, amountKES: Number(amount), date, month: monthKey(date)
     });
   } catch (err) {
     console.error("Failed to add expense:", err);
