@@ -48,3 +48,13 @@ The Firestore free quota is sufficient for small applications and development pr
 
 [1]: https://firebase.google.com/docs/firestore/pricing?utm_source=chatgpt.com "Understand Cloud Firestore billing  |  Firebase"
 [2]: https://firebase.google.com/docs/firestore/manage-databases?authuser=2&utm_source=chatgpt.com "Manage databases  |  Firestore  |  Firebase"
+
+ 
+const firebaseConfig = {
+  apiKey: "AIzaSyCg3vcxorjGG3J7eL-wpnL2Nd7a2ij-ttg",
+  authDomain: "expense-tracker-git.firebaseapp.com",
+  projectId: "expense-tracker-git",
+  storageBucket: "expense-tracker-git.firebasestorage.app",
+  messagingSenderId: "761400789190",
+  appId: "1:761400789190:web:bf91d2b187d35da9276fc7"
+};
